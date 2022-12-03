@@ -18,7 +18,7 @@ for (const line of lines) {
 }
 
 //	In the event the input file doesn't end with a newline, we must push the final elf into the stack manually
-if (elves.length > 0) {
+if (elf.length > 0) {
 	elves.push(elf)
 }
 
