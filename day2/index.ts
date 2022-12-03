@@ -1,12 +1,6 @@
 import { absModulo, readFileLinesToArray } from "../utils"
 const lines = readFileLinesToArray(`${__dirname}/input.txt`)
 
-/*
-	A = rock	X = rock	X = lose
-	B = paper	Y = paper	Y = draw
-	C = scissor	Z = scissor	Z = win
-*/
-
 type OpponentPlay = "A" | "B" | "C"
 type StratPlay = "X" | "Y" | "Z"
 type OutcomeMap = {
@@ -14,8 +8,12 @@ type OutcomeMap = {
 		[strat in StratPlay]: number
 	}
 }
-//	Map for part 1
-const outcomes: OutcomeMap = {
+type InstructionMap = { [instruction in StratPlay]: number }
+
+//	This map uses the opponent play keys and maps them to our strategic play keys. The number is the correlated score
+//	based on the win/loss of the combined keys.
+//	Example: A Y = opponent rock, player paper. Player wins, so 6 points. Therefore, outcomeMap["A"]["Y"] = 6
+const outcomeMap: OutcomeMap = {
 	A: {
 		X: 3,
 		Y: 6,
@@ -33,34 +31,30 @@ const outcomes: OutcomeMap = {
 	},
 }
 
-const weights: { [weight in OpponentPlay | StratPlay]: number } = {
-	A: 0,
-	X: 0,
-
-	B: 1,
-	Y: 1,
-
-	C: 2,
-	Z: 2,
-}
-const stratWeightLookup: StratPlay[] = ["X", "Y", "Z"]
-
-const instructions: { [instruction in StratPlay]: number } = {
+//	Instruction map tells us how many indices we need to move (positive or negative) in the respective order. We can
+//	think of the rock/paper/scissors game as a looping array, since P beats R beats S beats P beats R ...
+//	This means that for a draw, we must play the same index in the array. If we order the array "rock/paper/scissors",
+//	any move's nemesis is one index ahead, and it's prey is one index behind. Thus, for us to lose, we must choose the
+//	item one index behind what the index of the move the opponent is playing.
+const instructionMap: InstructionMap = {
 	X: -1,
 	Y: 0,
 	Z: 1,
 }
 
+const stratLookup: StratPlay[] = ["X", "Y", "Z"]
+const oppLookup: OpponentPlay[] = ["A", "B", "C"]
+
 let part1Sum: number = 0
 let part2Sum: number = 0
 for (const line of lines) {
 	const [opponent, strat] = line.split(" ") as [OpponentPlay, StratPlay]
-	part1Sum += outcomes[opponent][strat] + (weights[strat] + 1)
+	part1Sum += outcomeMap[opponent][strat] + (stratLookup.indexOf(strat) + 1)
 
-	const oppPlayInt = weights[opponent]
-	const idx = absModulo(oppPlayInt + instructions[strat], 3)
-	const moveToPlay = stratWeightLookup[idx]
-	part2Sum += outcomes[opponent][moveToPlay] + (weights[moveToPlay] + 1)
+	const oppPlayIdx = oppLookup.indexOf(opponent)
+	const stratPlayIdx = absModulo(oppPlayIdx + instructionMap[strat], 3)
+	const instructedStrat = stratLookup[stratPlayIdx]
+	part2Sum += outcomeMap[opponent][instructedStrat] + (stratPlayIdx + 1)
 }
 
 console.log(`Part 1: ${part1Sum}`)
