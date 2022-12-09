@@ -1,5 +1,5 @@
-import { absModulo, readFileLinesToArray } from "../utils"
-const lines = readFileLinesToArray(`${__dirname}/input.txt`)
+import { absModulo, getPuzzleInputAsLines } from "../utils"
+const lines = getPuzzleInputAsLines(`${__dirname}/input.txt`)
 
 type OpponentPlay = "A" | "B" | "C"
 type StratPlay = "X" | "Y" | "Z"

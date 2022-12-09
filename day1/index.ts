@@ -1,5 +1,5 @@
-import { readFileLinesToArray, sumArray } from "../utils"
-const lines = readFileLinesToArray(`${__dirname}/input.txt`)
+import { getPuzzleInputAsLines, sumArray } from "../utils"
+const lines = getPuzzleInputAsLines(`${__dirname}/input.txt`)
 
 //	Each elf in this problem is just a collection of calories. The `elf` var is a working stack of numbers that gets
 //	committed to the list of elves when the line reader hits an empty line

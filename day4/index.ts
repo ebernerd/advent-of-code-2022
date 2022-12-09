@@ -1,5 +1,5 @@
-import { readFileLinesToArray } from "../utils"
-const lines = readFileLinesToArray(`${__dirname}/input.txt`)
+import { getPuzzleInputAsLines } from "../utils"
+const lines = getPuzzleInputAsLines(`${__dirname}/input.txt`)
 
 type Range = [min: number, max: number]
 

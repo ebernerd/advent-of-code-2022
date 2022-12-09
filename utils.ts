@@ -1,21 +1,14 @@
 import { readFileSync } from "fs"
 
-type ReadFileLinesToArrayOptions = {
-	skipEmpty?: boolean
-}
-export const readFileLinesToArray = (
-	filePath: string,
-	options?: ReadFileLinesToArrayOptions
-): string[] => {
+export const getPuzzleInputAsString = (filePath: string) => {
 	const buf = readFileSync(filePath)
-
 	const contents = buf.toString("utf-8")
+	return contents
+}
 
+export const getPuzzleInputAsLines = (filePath: string): string[] => {
+	const contents = getPuzzleInputAsString(filePath)
 	let lines: string[] = contents.split("\n")
-	if (options?.skipEmpty) {
-		lines = lines.filter((str) => str.length > 0)
-	}
-
 	return lines
 }
 
