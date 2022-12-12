@@ -12,6 +12,9 @@ export const getPuzzleInputAsLines = (filePath: string): string[] => {
 	return lines
 }
 
+export const clampValue = (min: number, value: number, max: number) =>
+	Math.min(Math.max(value, min), max)
+
 export const absModulo = (x: number, m: number) => ((x % m) + m) % m
 
 export const sumArray = (arr: number[]) =>
